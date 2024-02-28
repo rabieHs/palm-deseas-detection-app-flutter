@@ -21,7 +21,7 @@ class ScanPalmBloc extends Bloc<ScanPalmEvent, ScanPalmState> {
       final cameraController = event.controller;
       if (!cameraController.value.isTakingPicture) {
         final file = await cameraController.takePicture();
-
+        print(file.path);
         if (!cameraController.value.isTakingPicture) {
           final imageFile = File(file.path);
           emit(TakePictureState(imagePath: imageFile.path));

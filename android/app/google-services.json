@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "31888991447",
+    "project_id": "palma-database",
+    "storage_bucket": "palma-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31888991447:android:4fbd6fc7ee57d68cf33c92",
+        "android_client_info": {
+          "package_name": "com.example.palm_deseas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYd5HVqdS4yXVhdk0QIsfg2bpSIPI9Eeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

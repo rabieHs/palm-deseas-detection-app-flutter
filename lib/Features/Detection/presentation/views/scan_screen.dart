@@ -13,44 +13,42 @@ class ScanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => dp<ScanPalmBloc>()..add(InitializeCamera()),
-      child:
-          BlocListener<ScanPalmBloc, ScanPalmState>(listener: (context, state) {
-        if (state is TakePictureState) {
-          showDialog(
-              context: context,
-              builder: (_context) {
-                BlocProvider.of<ScanPalmBloc>(context).add(InitializeCamera());
-                return const AlertDialog(
-                  content: Text("Picture saved successfully"),
-                );
-              });
-        }
-      }, child: BlocBuilder<ScanPalmBloc, ScanPalmState>(
-        builder: (context, state) {
-          if (state is ScanPalmInitialized) {
-            final controller = state.controller;
-            return Scaffold(
-                body: Stack(
-              children: [
-                Positioned.fill(
-                  child: CameraPreview(
-                    controller,
-                  ),
+    return BlocListener<ScanPalmBloc, ScanPalmState>(
+        listener: (context, state) {
+      if (state is TakePictureState) {
+        showDialog(
+            context: context,
+            builder: (_context) {
+              BlocProvider.of<ScanPalmBloc>(context).add(InitializeCamera());
+              return const AlertDialog(
+                content: Text("Picture saved successfully"),
+              );
+            });
+      }
+    }, child: BlocBuilder<ScanPalmBloc, ScanPalmState>(
+      builder: (context, state) {
+        BlocProvider.of<ScanPalmBloc>(context).add(InitializeCamera());
+        if (state is ScanPalmInitialized) {
+          final controller = state.controller;
+          return Scaffold(
+              body: Stack(
+            children: [
+              Positioned.fill(
+                child: CameraPreview(
+                  controller,
                 ),
-                cameraButton(context, controller, state),
-                backButton(context, controller),
-              ],
-            ));
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      )),
-    );
+              ),
+              cameraButton(context, controller, state),
+              backButton(context, controller),
+            ],
+          ));
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    ));
   }
 
   Widget backButton(BuildContext context, CameraController controller) {
@@ -79,6 +77,7 @@ class ScanScreen extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: InkWell(
         onTap: () async {
+          print("working");
           BlocProvider.of<ScanPalmBloc>(context)
               .add(TakePicture(controller: controller));
         },
