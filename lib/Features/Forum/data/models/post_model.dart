@@ -1,7 +1,7 @@
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 
 class PostModel extends Post {
-  PostModel(super.Likes,
+  const PostModel(super.Likes,
       {required super.id,
       required super.user_id,
       required super.user_name,
@@ -10,7 +10,7 @@ class PostModel extends Post {
       required super.date_published});
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>
-      PostModel(json["likes"],
+      PostModel(json["likes"] ?? [],
           id: json["id"],
           user_id: json["user_id"],
           user_name: json["user_name"],

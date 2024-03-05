@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:palm_deseas/Features/Forum/data/datasource/post_remote_datasouce.dart';
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/domain/repository/base_post_repository.dart';
+import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
 import 'package:palm_deseas/core/error/exception.dart';
 import 'package:palm_deseas/core/error/failure.dart';
 
@@ -37,6 +38,21 @@ class PostrepositoryImpl implements BasePostRepository {
     if (await networkInfo.isConnected) {
       final postStream = remoteDatasource.streamPosts();
       return Right(postStream);
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> likePost(
+      LikePostusecaseParameters parameters) async {
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDatasource.likePost(parameters);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
     } else {
       return Left(OfflineFailure());
     }

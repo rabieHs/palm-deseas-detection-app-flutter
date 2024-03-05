@@ -8,7 +8,7 @@ abstract class Post extends Equatable {
   final String user_photo;
   final String content;
   final String date_published;
-  final Likes;
+  final List Likes;
 
   const Post(
     this.Likes, {

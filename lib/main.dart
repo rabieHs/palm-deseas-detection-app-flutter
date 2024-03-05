@@ -5,6 +5,7 @@ import 'package:palm_deseas/Features/Detection/presentation/controllers/bloc/sca
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/controllers/navigation_bloc/navigation_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/views/home.dart';
+import 'package:palm_deseas/Features/authentication/presentation/views/sign_up.dart';
 import 'package:palm_deseas/core/dependecy_injection.dart';
 import 'package:palm_deseas/firebase_options.dart';
 
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData(),
-          home: const Home(),
+          theme: ThemeData(primarySwatch: Colors.green),
+          home: SignUp(),
         ));
   }
 }
