@@ -16,3 +16,18 @@ class OfflineFailure extends Failure {
   @override
   List<Object?> get props => [];
 }
+
+class ExistingUserFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class WrongPasswordFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
+class ManyRestsFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}

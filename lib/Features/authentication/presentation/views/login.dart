@@ -7,6 +7,7 @@ import '../../../../core/common/styles.dart';
 import '../../../../core/common/widgets/custom_button.dart';
 import '../../../../core/common/widgets/custom_text_form_field.dart';
 import '../../../../core/constances.dart';
+import '../../domain/entities/user.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});

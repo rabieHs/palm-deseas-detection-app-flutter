@@ -6,13 +6,13 @@ class User extends Equatable {
   final String phone;
   final String name;
   final String email;
-  final String photo;
+  String? photo;
   User({
     this.id,
     required this.phone,
     required this.name,
     required this.email,
-    required this.photo,
+    this.photo,
   });
 
   @override

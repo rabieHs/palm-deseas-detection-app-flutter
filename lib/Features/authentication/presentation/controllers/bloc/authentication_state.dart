@@ -11,4 +11,6 @@ class AuthenticationInitial extends AuthenticationState {}
 
 class LoadingCreationUserState extends AuthenticationState {}
 
-class LoadedCreationUserState extends AuthenticationState {}
+class SuccessCreationUserState extends AuthenticationState {}
+
+class ErrorCreationUserState extends AuthenticationState {}
