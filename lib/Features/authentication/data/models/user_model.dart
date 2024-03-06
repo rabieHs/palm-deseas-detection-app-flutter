@@ -23,6 +23,7 @@ class UserModel extends User {
       'name': name,
       'email': email,
       'photo': photo,
+      'phone': phone
     };
   }
 }

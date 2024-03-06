@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
           color: Colors.green,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          onPressed: () {},
+          onPressed: onTap,
           child: SizedBox(
             height: defaultPadding * 3.4,
             width: defaultPadding * 15,

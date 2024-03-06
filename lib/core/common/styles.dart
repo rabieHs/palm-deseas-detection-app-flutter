@@ -5,3 +5,6 @@ const titleTextStyle =
 const buttonTextStyle =
     TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold);
 const title2TextStyle = TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
+const title3TextStyle = TextStyle(
+  fontSize: 18,
+);

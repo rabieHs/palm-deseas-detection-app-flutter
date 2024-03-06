@@ -3,11 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:palm_deseas/Features/Home/Presentation/views/home.dart';
+import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
 import 'package:palm_deseas/Features/authentication/presentation/views/login.dart';
 
 import 'package:palm_deseas/core/common/styles.dart';
 import 'package:palm_deseas/core/constances.dart';
 
+import '../../../../core/common/methods.dart';
 import '../../../../core/common/widgets/custom_button.dart';
 import '../../../../core/common/widgets/custom_text_form_field.dart';
 
@@ -18,11 +22,28 @@ class SignUp extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(context),
-    );
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+      if (state is LoadingCreationUserState) {
+        showLoadingDialog(context);
+      } else if (state is ErrorCreationUserState) {
+        Navigator.pop(context);
+        showErrorSnackbar(context, state.message);
+      } else if (state is SuccessCreationUserState) {
+        BlocProvider.of<AuthenticationBloc>(context).add(GetUserEvent());
+      }
+      if (state is SuccessGetUsertate) {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+      }
+    }, builder: (context, state) {
+      return Scaffold(
+        body: _buildBody(context),
+      );
+    });
   }
 
   SingleChildScrollView _buildBody(BuildContext context) {
@@ -95,33 +116,49 @@ class SignUp extends StatelessWidget {
 
   Form _buildFrom(BuildContext context) {
     return Form(
+        key: formKey,
         child: Column(
-      children: [
-        CustomTextFormField(
-          isPassword: false,
-          label: "User Name",
-          controller: nameController,
-        ),
-        CustomTextFormField(
-          isPassword: false,
-          label: "User Email",
-          controller: emailController,
-        ),
-        CustomTextFormField(
-          isPassword: false,
-          label: "Phone Number ",
-          controller: phoneController,
-        ),
-        CustomTextFormField(
-          isPassword: true,
-          label: "Password",
-          controller: passwordController,
-        ),
-        CustomButton(
-          title: "Register",
-          onTap: () {},
-        ),
-      ],
-    ));
+          children: [
+            CustomTextFormField(
+              validation: validateField,
+              isPassword: false,
+              label: "User Name",
+              controller: nameController,
+            ),
+            CustomTextFormField(
+              validation: validateEmailField,
+              isPassword: false,
+              label: "User Email",
+              controller: emailController,
+            ),
+            CustomTextFormField(
+              validation: validatePhoneField,
+              type: TextInputType.number,
+              isPassword: false,
+              label: "Phone Number ",
+              controller: phoneController,
+            ),
+            CustomTextFormField(
+              validation: validatePasswordField,
+              isPassword: true,
+              label: "Password",
+              controller: passwordController,
+            ),
+            CustomButton(
+              title: "Register",
+              onTap: () {
+                if (formKey.currentState!.validate()) {
+                  BlocProvider.of<AuthenticationBloc>(context).add(
+                      CreateUserEvent(
+                          email: emailController.text,
+                          name: nameController.text,
+                          password: passwordController.text,
+                          photo: "",
+                          phoneNumber: phoneController.text));
+                }
+              },
+            ),
+          ],
+        ));
   }
 }

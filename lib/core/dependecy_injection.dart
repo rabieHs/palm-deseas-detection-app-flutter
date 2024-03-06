@@ -15,6 +15,7 @@ import 'package:palm_deseas/Features/authentication/data/datasource/remote_datas
 import 'package:palm_deseas/Features/authentication/data/repository/authentication_repository_impl.dart';
 import 'package:palm_deseas/Features/authentication/domain/repository/base_auth_repository.dart';
 import 'package:palm_deseas/Features/authentication/domain/usecases/create_user_usecase.dart';
+import 'package:palm_deseas/Features/authentication/domain/usecases/get_user_usecase.dart';
 import 'package:palm_deseas/Features/authentication/domain/usecases/login_user_usecase.dart';
 import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
 import 'package:palm_deseas/core/common/failure_handler.dart';
@@ -37,7 +38,7 @@ class DependencyInjection {
     dp.registerFactory(() => NavigationBloc());
     dp.registerFactory<PostBloc>(() => PostBloc(dp(), dp(), FailureHandler()));
     dp.registerFactory<AuthenticationBloc>(
-        () => AuthenticationBloc(dp(), dp()));
+        () => AuthenticationBloc(dp(), dp(), dp(), dp()));
 
     // Datarouces
     dp.registerLazySingleton<BasePostRemoteDatasource>(
@@ -58,6 +59,7 @@ class DependencyInjection {
     dp.registerLazySingleton(() => StreamPostsUsecase(repository: dp()));
     dp.registerLazySingleton(() => CreateUserUsecase(dp()));
     dp.registerLazySingleton(() => LoginUserUsecase(dp()));
+    dp.registerLazySingleton(() => GetUserUsecase(dp()));
     //! External
 
     final handler = FailureHandler();

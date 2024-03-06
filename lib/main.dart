@@ -5,6 +5,7 @@ import 'package:palm_deseas/Features/Detection/presentation/controllers/bloc/sca
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/controllers/navigation_bloc/navigation_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/views/home.dart';
+import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
 import 'package:palm_deseas/Features/authentication/presentation/views/sign_up.dart';
 import 'package:palm_deseas/core/dependecy_injection.dart';
 import 'package:palm_deseas/firebase_options.dart';
@@ -26,12 +27,19 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => dp<PostBloc>()..add(GetAllPostsEvent())),
           BlocProvider(create: (context) => dp<NavigationBloc>()),
           BlocProvider(create: (context) => dp<ScanPalmBloc>()),
+          BlocProvider(
+              create: (context) =>
+                  dp<AuthenticationBloc>()..add(GetUserEvent()))
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(primarySwatch: Colors.green),
-          home: SignUp(),
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              theme: ThemeData(primarySwatch: Colors.green),
+              home: state is ErrorGetUserUserState ? SignUp() : const Home(),
+            );
+          },
         ));
   }
 }

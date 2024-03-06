@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palm_deseas/Features/Blog/presentation/views/blog.dart';
 import 'package:palm_deseas/Features/Detection/presentation/views/scan_screen.dart';
@@ -12,8 +10,7 @@ class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext _context) {
-    final navigationBloc = dp<NavigationBloc>();
+  Widget build(BuildContext context) {
     return BlocBuilder<NavigationBloc, NavigationState>(
         builder: (context, state) {
       return Scaffold(

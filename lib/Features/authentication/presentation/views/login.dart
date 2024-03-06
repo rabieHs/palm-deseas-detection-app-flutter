@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:palm_deseas/Features/Home/Presentation/views/home.dart';
+import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
 import 'package:palm_deseas/Features/authentication/presentation/views/sign_up.dart';
+import 'package:palm_deseas/core/common/methods.dart';
 
 import '../../../../core/common/styles.dart';
 import '../../../../core/common/widgets/custom_button.dart';
@@ -14,11 +18,28 @@ class Login extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(context),
-    );
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: ((context, state) {
+      if (state is LoadingLoginUserState) {
+        showLoadingDialog(context);
+      } else if (state is ErrorLoginUserState) {
+        Navigator.pop(context);
+        showErrorSnackbar(context, state.message);
+      } else if (state is SuccessLoginUserState) {
+        BlocProvider.of<AuthenticationBloc>(context).add(GetUserEvent());
+      }
+      if (state is SuccessGetUsertate) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Home()));
+      }
+    }), builder: (context, state) {
+      return Scaffold(
+        body: _buildBody(context),
+      );
+    });
   }
 
   SingleChildScrollView _buildBody(BuildContext context) {
@@ -38,7 +59,7 @@ class Login extends StatelessWidget {
                 style: title2TextStyle,
               ),
             ),
-            _buildFrom(),
+            _buildFrom(context),
             _buildLoginNavigationText(context)
           ],
         ),
@@ -83,25 +104,35 @@ class Login extends StatelessWidget {
     );
   }
 
-  Form _buildFrom() {
+  Form _buildFrom(BuildContext context) {
     return Form(
+        key: formKey,
         child: Column(
-      children: [
-        CustomTextFormField(
-          isPassword: false,
-          label: "User Email",
-          controller: emailController,
-        ),
-        CustomTextFormField(
-          isPassword: true,
-          label: "Password",
-          controller: passwordController,
-        ),
-        CustomButton(
-          title: "Login",
-          onTap: () {},
-        ),
-      ],
-    ));
+          children: [
+            CustomTextFormField(
+              validation: validateEmailField,
+              isPassword: false,
+              label: "User Email",
+              controller: emailController,
+            ),
+            CustomTextFormField(
+              validation: validatePasswordField,
+              isPassword: true,
+              label: "Password",
+              controller: passwordController,
+            ),
+            CustomButton(
+              title: "Login",
+              onTap: () {
+                if (formKey.currentState!.validate()) {
+                  BlocProvider.of<AuthenticationBloc>(context).add(
+                      LoginUserEvent(
+                          email: emailController.text,
+                          password: passwordController.text));
+                }
+              },
+            ),
+          ],
+        ));
   }
 }
