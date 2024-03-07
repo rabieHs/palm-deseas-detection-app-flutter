@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
+import 'package:palm_deseas/Features/Forum/presentation/views/pages/add_post_screen.dart';
 import 'package:palm_deseas/core/dependecy_injection.dart';
-import '../../../../core/common/widgets/exception_widget.dart';
-import 'widgets/post_card.dart';
+import '../../../../../core/common/widgets/exception_widget.dart';
+import '../widgets/post_card.dart';
 
 class Forum extends StatelessWidget {
   const Forum({super.key});
@@ -16,6 +17,22 @@ class Forum extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: const Text("Forum"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              context: context,
+              builder: (context) => Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: const AddPostScreen(),
+                  ));
+        },
+        child: const Icon(Icons.add),
       ),
       body: _buildBody(),
     );

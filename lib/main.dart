@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               theme: ThemeData(primarySwatch: Colors.green),
-              home: state is ErrorGetUserUserState ? SignUp() : const Home(),
+              home: state is! ErrorGetUserUserState ? SignUp() : const Home(),
             );
           },
         ));

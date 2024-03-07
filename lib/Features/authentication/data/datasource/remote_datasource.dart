@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:palm_deseas/Features/authentication/data/models/user_model.dart';
 import 'package:palm_deseas/Features/authentication/domain/usecases/login_user_usecase.dart';
+import 'package:palm_deseas/core/constances.dart';
 import 'package:palm_deseas/core/error/exception.dart';
 
 import '../../../../core/error/failure.dart';
@@ -27,6 +28,7 @@ class AuthenticationRemoteDatasourceImpl
           email: userModel.email, password: password);
       if (user.user != null) {
         userModel.id = user.user!.uid;
+        userModel.photo = '$photoGeneratorUrl${userModel.name}';
         await firestore
             .collection('users')
             .doc(userModel.id)

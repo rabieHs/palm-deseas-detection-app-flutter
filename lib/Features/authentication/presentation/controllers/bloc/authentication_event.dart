@@ -12,17 +12,20 @@ class CreateUserEvent extends AuthenticationEvent {
   final String email;
   final String name;
   final String password;
-  final String photo;
+
   final String phoneNumber;
   const CreateUserEvent({
     required this.email,
     required this.name,
     required this.password,
-    required this.photo,
     required this.phoneNumber,
   });
   @override
-  List<Object> get props => [email, password, phoneNumber, photo];
+  List<Object> get props => [
+        email,
+        password,
+        phoneNumber,
+      ];
 }
 
 class LoginUserEvent extends AuthenticationEvent {

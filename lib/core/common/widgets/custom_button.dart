@@ -15,7 +15,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(defaultPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: defaultPadding, vertical: defaultPadding / 2),
       child: MaterialButton(
           color: Colors.green,
           shape:

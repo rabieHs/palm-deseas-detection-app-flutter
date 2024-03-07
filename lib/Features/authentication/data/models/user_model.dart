@@ -6,7 +6,7 @@ class UserModel extends User {
     required super.phone,
     required super.name,
     required super.email,
-    required super.photo,
+    super.photo,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(

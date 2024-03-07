@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 
 import 'package:palm_deseas/Features/Forum/data/models/post_model.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
-import 'package:palm_deseas/core/error/failure.dart';
 
 import '../../../../core/error/exception.dart';
 
@@ -36,10 +35,8 @@ class PostRemoteDatasourceImpl implements BasePostRemoteDatasource {
 
   @override
   Stream<List<PostModel>> streamPosts() {
-    print("startig fetching");
     return firestore.collection("posts").snapshots().map((snapshot) {
       final docs = snapshot.docs;
-      print(docs);
 
       final postsList = docs.map((doc) {
         Map<String, dynamic> data = doc.data();
@@ -58,7 +55,7 @@ class PostRemoteDatasourceImpl implements BasePostRemoteDatasource {
         });
       } else {
         await firestore.collection('posts').doc(parameters.post.id).update({
-          'likes': FieldValue.arrayRemove([parameters.uid])
+          'likes': FieldValue.arrayUnion([parameters.uid])
         });
       }
       return unit;

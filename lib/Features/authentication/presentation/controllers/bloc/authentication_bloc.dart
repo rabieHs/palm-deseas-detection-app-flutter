@@ -24,10 +24,10 @@ class AuthenticationBloc
     on<AuthenticationEvent>((event, emit) {});
     on<CreateUserEvent>((event, emit) async {
       User _user = User(
-          email: event.email,
-          name: event.name,
-          phone: event.phoneNumber,
-          photo: event.photo);
+        email: event.email,
+        name: event.name,
+        phone: event.phoneNumber,
+      );
       final CreateUserParameters parameters =
           CreateUserParameters(user: _user, password: event.password);
       emit(LoadingCreationUserState());

@@ -22,7 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: defaultPadding / 2, horizontal: defaultPadding / 2),
+          vertical: defaultPadding / 2.5, horizontal: defaultPadding / 2),
       child: TextFormField(
         keyboardType: type,
         validator: validation,

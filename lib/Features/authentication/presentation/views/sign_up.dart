@@ -93,8 +93,8 @@ class SignUp extends StatelessWidget {
     return Center(
       child: Image.asset(
         "assets/images/palm tree-pana.png",
-        width: screenWidth(context) * 0.7,
-        height: screenWidth(context) * 0.6,
+        width: screenWidth(context) * 0.65,
+        height: screenWidth(context) * 0.55,
       ),
     );
   }
@@ -153,7 +153,6 @@ class SignUp extends StatelessWidget {
                           email: emailController.text,
                           name: nameController.text,
                           password: passwordController.text,
-                          photo: "",
                           phoneNumber: phoneController.text));
                 }
               },

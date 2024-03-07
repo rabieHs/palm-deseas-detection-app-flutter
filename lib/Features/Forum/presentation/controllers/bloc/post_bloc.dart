@@ -8,6 +8,7 @@ import 'package:palm_deseas/Features/Forum/data/models/post_model.dart';
 
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/get_all_posts_usecase.dart';
+import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/stream_posts_usecase.dart';
 import 'package:palm_deseas/core/common/failure_handler.dart';
 import 'package:palm_deseas/core/usecase/base_usecase.dart';
@@ -18,6 +19,7 @@ part 'post_state.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   final GetAllPostsUsecase postsUsecase;
   final StreamPostsUsecase postsStreamUsecase;
+  final LikePostUsecase likePostUsecase;
   final FailureHandler handler;
   StreamController<List<Post>> _postController = StreamController.broadcast();
 
@@ -27,6 +29,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     this.postsUsecase,
     this.postsStreamUsecase,
     this.handler,
+    this.likePostUsecase,
   ) : super(PostInitial()) {
     postsStreamUsecase.call(NoParameters()).then((streamResult) {
       streamResult.fold(
@@ -43,6 +46,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       result.fold(
           (l) => emit(ErrorPostsState(message: handler.mapFailureToMessage(l))),
           (r) => emit(LoadedPostsSState(posts: r)));
+    });
+
+    on<LikePostsEvent>((event, emit) async {
+      emit(LoadingPostsState());
+      final result = await likePostUsecase
+          .call(LikePostusecaseParameters(post: event.post, uid: event.uid));
+
+      result.fold(
+          (l) => emit(ErrorPostsState(message: handler.mapFailureToMessage(l))),
+          (r) {});
     });
   }
 }
