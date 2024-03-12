@@ -24,7 +24,7 @@ class ExceptionWidget extends StatelessWidget {
         Text(
           message,
           style: const TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black45),
+              fontSize: 17, fontWeight: FontWeight.w400, color: Colors.black45),
         )
       ],
     ));

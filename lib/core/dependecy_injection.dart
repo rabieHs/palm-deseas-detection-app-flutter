@@ -7,10 +7,13 @@ import 'package:palm_deseas/Features/Detection/presentation/controllers/bloc/sca
 import 'package:palm_deseas/Features/Forum/data/datasource/post_remote_datasouce.dart';
 import 'package:palm_deseas/Features/Forum/data/repository/post_repository_impl.dart';
 import 'package:palm_deseas/Features/Forum/domain/repository/base_post_repository.dart';
+import 'package:palm_deseas/Features/Forum/domain/usecases/add_post_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/get_all_posts_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
+import 'package:palm_deseas/Features/Forum/domain/usecases/stream_post_comments_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/stream_posts_usecase.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
+import 'package:palm_deseas/Features/Forum/presentation/controllers/comment_bloc/comment_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/controllers/navigation_bloc/navigation_bloc.dart';
 import 'package:palm_deseas/Features/authentication/data/datasource/remote_datasource.dart';
 import 'package:palm_deseas/Features/authentication/data/repository/authentication_repository_impl.dart';
@@ -38,9 +41,10 @@ class DependencyInjection {
 
     dp.registerFactory(() => NavigationBloc());
     dp.registerFactory<PostBloc>(
-        () => PostBloc(dp(), dp(), FailureHandler(), dp()));
+        () => PostBloc(dp(), dp(), FailureHandler(), dp(), dp()));
     dp.registerFactory<AuthenticationBloc>(
         () => AuthenticationBloc(dp(), dp(), dp(), dp()));
+    dp.registerFactory<CommentBloc>(() => CommentBloc(dp(), dp()));
 
     // Datarouces
     dp.registerLazySingleton<BasePostRemoteDatasource>(
@@ -63,6 +67,8 @@ class DependencyInjection {
     dp.registerLazySingleton(() => LoginUserUsecase(dp()));
     dp.registerLazySingleton(() => GetUserUsecase(dp()));
     dp.registerLazySingleton(() => LikePostUsecase(dp()));
+    dp.registerLazySingleton(() => StreamPostCommentsUsecase(dp()));
+    dp.registerLazySingleton(() => UploadPostUseCase(dp()));
     //! External
 
     final handler = FailureHandler();

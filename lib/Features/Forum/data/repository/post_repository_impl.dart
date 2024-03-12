@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:palm_deseas/Features/Forum/data/datasource/post_remote_datasouce.dart';
+import 'package:palm_deseas/Features/Forum/data/models/post_model.dart';
+import 'package:palm_deseas/Features/Forum/domain/entities/comment.dart';
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/domain/repository/base_post_repository.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
 import 'package:palm_deseas/core/error/exception.dart';
 import 'package:palm_deseas/core/error/failure.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/networking/network_info.dart';
 
@@ -49,6 +51,43 @@ class PostrepositoryImpl implements BasePostRepository {
     if (await networkInfo.isConnected) {
       try {
         await remoteDatasource.likePost(parameters);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stream<List<Comment>>>> streamPostComments(
+      String postId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = remoteDatasource.streamPostComments(postId);
+        return Right(response);
+      } on ServerException catch (_) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> uploadPost(Post post) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final postModel = PostModel(
+            title: post.title,
+            id: post.id,
+            user_id: post.user_id,
+            user_name: post.user_name,
+            user_photo: post.user_photo,
+            content: post.content,
+            date_published: post.date_published);
+        await remoteDatasource.uploadPost(postModel);
         return const Right(unit);
       } on ServerException {
         return Left(ServerFailure());

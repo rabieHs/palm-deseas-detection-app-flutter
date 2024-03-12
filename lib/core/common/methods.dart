@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
 import '../constances.dart';
@@ -26,8 +27,23 @@ Future<dynamic> showLoadingDialog(BuildContext context) {
 
 void showErrorSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
-    backgroundColor: Colors.red,
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    content: AwesomeSnackbarContent(
+        title: "Error Occured!",
+        message: message,
+        contentType: ContentType.failure),
+  ));
+}
+
+void showSuccessSnackbar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    content: AwesomeSnackbarContent(
+        title: "Success!", message: message, contentType: ContentType.success),
   ));
 }
 

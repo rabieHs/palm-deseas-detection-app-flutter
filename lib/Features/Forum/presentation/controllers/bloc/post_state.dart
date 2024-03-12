@@ -38,3 +38,23 @@ class ErrorPostsState extends PostState {
   @override
   List<Object> get props => [message];
 }
+
+class UploadingPostState extends PostState {}
+
+class UploadedPostState extends PostState {
+  final String message;
+
+  UploadedPostState(this.message);
+  @override
+  // TODO: implement props
+  List<Object> get props => [message];
+}
+
+class ErrorUploadingPostState extends PostState {
+  final String message;
+  const ErrorUploadingPostState({
+    required this.message,
+  });
+  @override
+  List<Object> get props => [message];
+}

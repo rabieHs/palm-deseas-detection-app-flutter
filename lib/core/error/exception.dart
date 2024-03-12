@@ -2,6 +2,8 @@ class ServerException implements Exception {}
 
 class OfflineException implements Exception {}
 
+class EmptyDataException implements Exception {}
+
 class CacheException implements Exception {}
 
 class ExistingUserException implements Exception {}

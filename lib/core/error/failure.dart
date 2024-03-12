@@ -17,6 +17,11 @@ class OfflineFailure extends Failure {
   List<Object?> get props => [];
 }
 
+class EmptyDataFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
 class ExistingUserFailure extends Failure {
   @override
   List<Object?> get props => [];

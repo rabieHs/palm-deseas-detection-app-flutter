@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palm_deseas/Features/Detection/presentation/controllers/bloc/scan_palm_bloc.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
+import 'package:palm_deseas/Features/Forum/presentation/controllers/comment_bloc/comment_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/controllers/navigation_bloc/navigation_bloc.dart';
 import 'package:palm_deseas/Features/Home/Presentation/views/home.dart';
 import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
+import 'package:palm_deseas/Features/authentication/presentation/views/login.dart';
 import 'package:palm_deseas/Features/authentication/presentation/views/sign_up.dart';
 import 'package:palm_deseas/core/dependecy_injection.dart';
 import 'package:palm_deseas/firebase_options.dart';
@@ -29,7 +31,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => dp<ScanPalmBloc>()),
           BlocProvider(
               create: (context) =>
-                  dp<AuthenticationBloc>()..add(GetUserEvent()))
+                  dp<AuthenticationBloc>()..add(GetUserEvent())),
+          BlocProvider(create: (context) => dp<CommentBloc>()),
         ],
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               theme: ThemeData(primarySwatch: Colors.green),
-              home: state is! ErrorGetUserUserState ? SignUp() : const Home(),
+              home: state is! SuccessGetUsertate ? Login() : const Home(),
             );
           },
         ));

@@ -9,6 +9,8 @@ class FailureHandler {
         return "Please Check your Internet Connection";
       case ServerFailure:
         return "Server Exception Please Try Again";
+      case EmptyDataFailure:
+        return "There is no Data!";
 
       default:
         return "Error getting Data";

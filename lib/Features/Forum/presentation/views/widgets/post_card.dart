@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
+import 'package:palm_deseas/Features/Forum/presentation/controllers/comment_bloc/comment_bloc.dart';
+import 'package:palm_deseas/Features/Forum/presentation/views/pages/comments_screen.dart';
 import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
+import 'package:palm_deseas/core/common/styles.dart';
 
 import '../../../../../core/constances.dart';
 import '../../../domain/entities/post.dart';
@@ -23,7 +26,6 @@ class PostCard extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(defaultPadding),
           width: screenWidth(context),
-          height: 220,
           decoration: BoxDecoration(
               color: Colors.grey.shade300,
               borderRadius: BorderRadius.circular(15)),
@@ -55,8 +57,8 @@ class PostCard extends StatelessWidget {
       children: [
         SizedBox(
           width: screenWidth(context) * 0.69,
-          child: const Text(
-            "I have A problem with my palm Tress...",
+          child: Text(
+            post.title!,
             style: TextStyle(
                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
           ),
@@ -90,8 +92,8 @@ class PostCard extends StatelessWidget {
         ),
         SizedBox(
           width: screenWidth(context) * 0.65,
-          child: const Text(
-            "ksdjnfjkdsnfksqmjnflksldknfldssdfjkqdbfdksjqbfqljdhbgjlqhsbgqhjbgjlqskngdsndsjfnlksqjfbqskdmljfbdqskjbkqjgqbl",
+          child: Text(
+            post.content,
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
           ),
         ),
@@ -113,7 +115,7 @@ class PostCard extends StatelessWidget {
               },
               child: Icon(
                 Icons.heart_broken,
-                color: post.Likes.contains(
+                color: post.likes!.contains(
                         BlocProvider.of<AuthenticationBloc>(context).user.id)
                     ? Colors.green
                     : Colors.grey,
@@ -122,30 +124,33 @@ class PostCard extends StatelessWidget {
             const SizedBox(
               width: 5,
             ),
-            Text(
-              "${post.Likes.length} Likes",
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
-            )
+            Text("${post.likes!.length} Likes", style: smallTextStyle)
           ],
         ),
-        Row(
-          children: const [
-            Icon(
-              Icons.comment,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              "15 Comment",
-              style: TextStyle(
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<CommentBloc>(context)
+                .add(StreamCommentsEvent(postId: post.id));
+            showModalBottomSheet(
+                isScrollControlled: true,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                context: context,
+                builder: (context) => CommentsScreen());
+          },
+          child: Row(
+            children: const [
+              Icon(
+                Icons.comment,
                 color: Colors.grey,
               ),
-            )
-          ],
+              SizedBox(
+                width: 5,
+              ),
+              Text("15 Comment", style: smallTextStyle)
+            ],
+          ),
         ),
         Row(
           children: const [
@@ -156,12 +161,7 @@ class PostCard extends StatelessWidget {
             SizedBox(
               width: 5,
             ),
-            Text(
-              "15 Likes",
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            )
+            Text("15 Shares", style: smallTextStyle)
           ],
         )
       ],

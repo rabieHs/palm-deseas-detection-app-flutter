@@ -8,3 +8,9 @@ const title2TextStyle = TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
 const title3TextStyle = TextStyle(
   fontSize: 18,
 );
+
+const simpleTitleTextStyle =
+    TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
+
+const simpleTextStyle = TextStyle(fontSize: 15, color: Colors.grey);
+const smallTextStyle = TextStyle(color: Colors.grey);
