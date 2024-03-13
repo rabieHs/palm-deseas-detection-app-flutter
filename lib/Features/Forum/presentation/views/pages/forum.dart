@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/bloc/post_bloc.dart';
@@ -38,13 +39,13 @@ class Forum extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: _buildBody(),
+      body: _buildBody(context),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return CustomStreamBuilder(
-      stream: dp<PostBloc>().postsStream,
+      stream: BlocProvider.of<PostBloc>(context).postsStream,
       builder: (context, posts) {
         return PostsList(posts: posts);
       },

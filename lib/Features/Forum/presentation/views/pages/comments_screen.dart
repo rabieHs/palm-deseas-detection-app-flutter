@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:palm_deseas/Features/Forum/domain/entities/comment.dart';
+import 'package:palm_deseas/Features/Forum/domain/entities/post.dart';
 import 'package:palm_deseas/Features/Forum/presentation/controllers/comment_bloc/comment_bloc.dart';
+import 'package:palm_deseas/core/common/methods.dart';
 import 'package:palm_deseas/core/common/widgets/custom_stream_builder.dart';
 import 'package:palm_deseas/core/constances.dart';
 
@@ -14,12 +15,27 @@ import '../widgets/add_comment_input.dart';
 import '../widgets/comment_card.dart';
 
 class CommentsScreen extends StatelessWidget {
-  const CommentsScreen({super.key});
+  final Post post;
+  const CommentsScreen({
+    Key? key,
+    required this.post,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentBloc, CommentState>(builder: (context, state) {
-      if (state is SuccessCommentState) {
+    return BlocConsumer<CommentBloc, CommentState>(listener: (context, state) {
+      if (state is LoadingAddCommentState) {
+      } else if (state is ErrorAddCommentState) {
+        showErrorSnackbar(context, state.message);
+      } else if (state is SuccessAddCommentState) {}
+    }, builder: (context, state) {
+      print(state.runtimeType);
+
+      if (state is ErrorCommentState) {
+        return ExceptionWidget(
+            message: state.message,
+            image: "assets/images/no_internet_image.png");
+      } else {
         return SingleChildScrollView(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -29,14 +45,6 @@ class CommentsScreen extends StatelessWidget {
             child: _buildBody(context),
           ),
         );
-      } else if (state is ErrorCommentState) {
-        return ExceptionWidget(
-            message: state.message,
-            image: "assets/images/no_internet_image.png");
-      } else {
-        return const ExceptionWidget(
-            message: "error getting Data",
-            image: "assets/images/no_internet_image.png");
       }
     });
   }
@@ -62,7 +70,9 @@ class CommentsScreen extends StatelessWidget {
               },
               stream: BlocProvider.of<CommentBloc>(context).commentStream),
         ),
-        AddCommentInput(),
+        AddCommentInput(
+          postId: post.id,
+        ),
       ],
     );
   }
@@ -80,10 +90,10 @@ class CommentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: 10,
+        itemCount: comments.length,
         itemBuilder: (context, index) {
           return CommentCard(
-            comment: comments[0],
+            comment: comments[index],
           );
         });
   }

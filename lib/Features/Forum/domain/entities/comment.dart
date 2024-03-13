@@ -5,14 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Comment extends Equatable {
-  final String id;
+  String? id;
   final String user_id;
   final String content;
   final String userName;
   final String profile_image;
   final Timestamp date_published;
-  const Comment({
-    required this.id,
+  Comment({
+    this.id,
     required this.user_id,
     required this.content,
     required this.userName,

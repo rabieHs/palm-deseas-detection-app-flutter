@@ -10,6 +10,7 @@ class Post extends Equatable {
   final String content;
   final Timestamp date_published;
   List? likes;
+
   String? title;
 
   Post({

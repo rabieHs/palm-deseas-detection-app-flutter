@@ -17,9 +17,10 @@ class CustomStreamBuilder extends StatelessWidget {
         stream: stream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const ExceptionWidget(
+            print(snapshot.error);
+/*             return const ExceptionWidget(
                 message: "error getting Data",
-                image: "assets/images/no_internet_image.png");
+                image: "assets/images/no_internet_image.png"); */
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {

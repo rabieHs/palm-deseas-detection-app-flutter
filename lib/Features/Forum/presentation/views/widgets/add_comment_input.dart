@@ -1,14 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:palm_deseas/Features/Forum/presentation/controllers/comment_bloc/comment_bloc.dart';
+import 'package:palm_deseas/Features/authentication/presentation/controllers/bloc/authentication_bloc.dart';
 
 import '../../../../../core/common/widgets/custome_filled_input_field.dart';
 import '../../../../../core/constances.dart';
 
 class AddCommentInput extends StatelessWidget {
+  final String postId;
   final TextEditingController inputCommentController = TextEditingController();
   AddCommentInput({
-    super.key,
-  });
+    Key? key,
+    required this.postId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +32,20 @@ class AddCommentInput extends StatelessWidget {
               controller: inputCommentController,
             ),
           ),
-          const CircleAvatar(
-            radius: 24,
-            child: Icon(
-              Icons.send,
-              color: Colors.white,
+          InkWell(
+            onTap: () {
+              print(inputCommentController.text);
+              BlocProvider.of<CommentBloc>(context).add(AddCommentsEvent(
+                  postId: postId,
+                  user: BlocProvider.of<AuthenticationBloc>(context).user,
+                  content: inputCommentController.text));
+            },
+            child: const CircleAvatar(
+              radius: 24,
+              child: Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
             ),
           )
         ],

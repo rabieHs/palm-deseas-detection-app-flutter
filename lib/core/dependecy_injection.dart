@@ -7,6 +7,7 @@ import 'package:palm_deseas/Features/Detection/presentation/controllers/bloc/sca
 import 'package:palm_deseas/Features/Forum/data/datasource/post_remote_datasouce.dart';
 import 'package:palm_deseas/Features/Forum/data/repository/post_repository_impl.dart';
 import 'package:palm_deseas/Features/Forum/domain/repository/base_post_repository.dart';
+import 'package:palm_deseas/Features/Forum/domain/usecases/add_comment_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/add_post_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/get_all_posts_usecase.dart';
 import 'package:palm_deseas/Features/Forum/domain/usecases/like_post_usecase.dart';
@@ -44,7 +45,7 @@ class DependencyInjection {
         () => PostBloc(dp(), dp(), FailureHandler(), dp(), dp()));
     dp.registerFactory<AuthenticationBloc>(
         () => AuthenticationBloc(dp(), dp(), dp(), dp()));
-    dp.registerFactory<CommentBloc>(() => CommentBloc(dp(), dp()));
+    dp.registerFactory<CommentBloc>(() => CommentBloc(dp(), dp(), dp()));
 
     // Datarouces
     dp.registerLazySingleton<BasePostRemoteDatasource>(
@@ -69,6 +70,7 @@ class DependencyInjection {
     dp.registerLazySingleton(() => LikePostUsecase(dp()));
     dp.registerLazySingleton(() => StreamPostCommentsUsecase(dp()));
     dp.registerLazySingleton(() => UploadPostUseCase(dp()));
+    dp.registerLazySingleton(() => AddCommentUsecase(dp()));
     //! External
 
     final handler = FailureHandler();

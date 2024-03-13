@@ -10,6 +10,7 @@ class CustomFilledInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
           hintText: "Write your comment",
           filled: true,

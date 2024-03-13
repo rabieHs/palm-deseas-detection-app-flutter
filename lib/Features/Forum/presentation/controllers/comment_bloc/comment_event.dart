@@ -17,3 +17,18 @@ class StreamCommentsEvent extends CommentEvent {
   @override
   List<Object> get props => [postId];
 }
+
+class AddCommentsEvent extends CommentEvent {
+  final String postId;
+  final User user;
+
+  final String content;
+  const AddCommentsEvent({
+    required this.postId,
+    required this.user,
+    required this.content,
+  });
+
+  @override
+  List<Object> get props => [postId, user, content];
+}

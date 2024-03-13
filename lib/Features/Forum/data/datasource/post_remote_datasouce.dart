@@ -10,6 +10,7 @@ import '../../../../core/error/exception.dart';
 
 abstract class BasePostRemoteDatasource {
   Future<Unit> uploadPost(PostModel postModel);
+  Future<Unit> uploadComment(CommentModel commentModel, String postId);
   Future<List<PostModel>> getAllPosts();
   Stream<List<PostModel>> streamPosts();
   Future<Unit> likePost(LikePostusecaseParameters parameters);
@@ -43,6 +44,7 @@ class PostRemoteDatasourceImpl implements BasePostRemoteDatasource {
 
       final postsList = docs.map((doc) {
         Map<String, dynamic> data = doc.data();
+        final model = PostModel.fromJson(data);
         return PostModel.fromJson(data);
       }).toList();
       return postsList;
@@ -97,6 +99,21 @@ class PostRemoteDatasourceImpl implements BasePostRemoteDatasource {
           .collection("posts")
           .doc(postModel.id)
           .set(postModel.toJson());
+      return unit;
+    } on FirebaseException catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<Unit> uploadComment(CommentModel commentModel, String postId) async {
+    try {
+      await firestore
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentModel.id)
+          .set(commentModel.toMap());
       return unit;
     } on FirebaseException catch (_) {
       throw ServerException();

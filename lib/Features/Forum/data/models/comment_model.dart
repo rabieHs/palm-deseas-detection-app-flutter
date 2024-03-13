@@ -3,7 +3,7 @@ import 'package:palm_deseas/Features/Forum/domain/entities/comment.dart';
 
 class CommentModel extends Comment {
   CommentModel(
-      {required super.id,
+      {super.id,
       required super.user_id,
       required super.content,
       required super.userName,
@@ -23,7 +23,7 @@ class CommentModel extends Comment {
 
   factory CommentModel.fromMap(Map<String, dynamic> map) {
     return CommentModel(
-      id: map['id'] as String,
+      id: map['id'] ?? "" as String,
       user_id: map['user_id'] as String,
       content: map['content'] as String,
       userName: map['user_name'] as String,

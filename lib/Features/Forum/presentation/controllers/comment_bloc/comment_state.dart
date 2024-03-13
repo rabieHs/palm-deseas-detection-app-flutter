@@ -29,3 +29,14 @@ class OfflineCommentState extends CommentState {
 }
 
 class SuccessCommentState extends CommentState {}
+
+class SuccessAddCommentState extends CommentState {}
+
+class LoadingAddCommentState extends CommentState {}
+
+class ErrorAddCommentState extends CommentState {
+  final String message;
+  const ErrorAddCommentState({
+    required this.message,
+  });
+}

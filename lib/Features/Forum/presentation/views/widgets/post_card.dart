@@ -101,70 +101,75 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Row _postActions(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                BlocProvider.of<PostBloc>(context).add(LikePostsEvent(post,
-                    BlocProvider.of<AuthenticationBloc>(context).user.id!));
-              },
-              child: Icon(
-                Icons.heart_broken,
-                color: post.likes!.contains(
-                        BlocProvider.of<AuthenticationBloc>(context).user.id)
-                    ? Colors.green
-                    : Colors.grey,
+  Padding _postActions(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  BlocProvider.of<PostBloc>(context).add(LikePostsEvent(post,
+                      BlocProvider.of<AuthenticationBloc>(context).user.id!));
+                },
+                child: Icon(
+                  Icons.heart_broken,
+                  color: post.likes!.contains(
+                          BlocProvider.of<AuthenticationBloc>(context).user.id)
+                      ? Colors.green
+                      : Colors.grey,
+                ),
               ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text("${post.likes!.length} Likes", style: smallTextStyle)
+            ],
+          ),
+          GestureDetector(
+            onTap: () {
+              BlocProvider.of<CommentBloc>(context)
+                  .add(StreamCommentsEvent(postId: post.id));
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  context: context,
+                  builder: (context) => CommentsScreen(
+                        post: post,
+                      ));
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.comment,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text("Comments", style: smallTextStyle)
+              ],
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text("${post.likes!.length} Likes", style: smallTextStyle)
-          ],
-        ),
-        GestureDetector(
-          onTap: () {
-            BlocProvider.of<CommentBloc>(context)
-                .add(StreamCommentsEvent(postId: post.id));
-            showModalBottomSheet(
-                isScrollControlled: true,
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                context: context,
-                builder: (context) => CommentsScreen());
-          },
-          child: Row(
+          ),
+          Row(
             children: const [
               Icon(
-                Icons.comment,
+                Icons.share,
                 color: Colors.grey,
               ),
               SizedBox(
                 width: 5,
               ),
-              Text("15 Comment", style: smallTextStyle)
+              Text("15 Shares", style: smallTextStyle)
             ],
-          ),
-        ),
-        Row(
-          children: const [
-            Icon(
-              Icons.share,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text("15 Shares", style: smallTextStyle)
-          ],
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

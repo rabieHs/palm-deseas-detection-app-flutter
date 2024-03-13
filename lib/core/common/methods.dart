@@ -28,6 +28,7 @@ Future<dynamic> showLoadingDialog(BuildContext context) {
 void showErrorSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 350),
     backgroundColor: Colors.transparent,
     elevation: 0,
     content: AwesomeSnackbarContent(
@@ -39,6 +40,7 @@ void showErrorSnackbar(BuildContext context, String message) {
 
 void showSuccessSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 350),
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
     elevation: 0,
